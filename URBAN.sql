@@ -1,0 +1,3480 @@
+
+/****** Object:  Table [dbo].[TIPOUSUARIOREGISTRO]    Script Date: 23/09/2019 11:38:29 ******/
+CREATE TABLE [dbo].[TIPOUSUARIOREGISTRO](
+	TIPOUSUARIO char(1)PRIMARY KEY CLUSTERED NOT NULL,
+	NOMBRE varchar(100) NULL
+);  
+
+/****** Object:  Table [dbo].[USUARIOS]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[USUARIOS]
+(
+IDUSUARIO  int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+USUARIO varchar(100) NOT NULL,
+CONTRASEÑA varchar(100) NOT NULL,
+TIPOUSUARIO char(1) REFERENCES TIPOUSUARIOREGISTRO(TIPOUSUARIO) NOT NULL,
+BHABILITADO int NULL,
+IID int,
+CONSTRAINT fk_TIPOUSUARIO_USUARIOS FOREIGN KEY (TIPOUSUARIO) REFERENCES TIPOUSUARIOREGISTRO(TIPOUSUARIO)
+ );
+
+ /****** Object:  Table [dbo].[Empleado]    Script Date: 01/01/2021 11:38:29 ******/
+CREATE TABLE [dbo].[EMPLEADO](
+	IIDEMPLEADO int IDENTITY(1,1)PRIMARY KEY CLUSTERED NOT NULL,
+	NOMBRE varchar(100) NULL,
+	FECHACONTRATO datetime NULL,
+	SUELDO float NULL,
+	EMAIL varchar(100) NULL,
+	TELEFONO int NULL,
+	IDUSUARIO int REFERENCES  USUARIOS(IDUSUARIO)NOT NULL,
+	BHABILITADO int NULL,
+    TIPOUSUARIO char(1) NOT NULL,
+	CONSTRAINT fk_TIPOUSUARIO_EMPLEADO FOREIGN KEY (TIPOUSUARIO) REFERENCES TIPOUSUARIOREGISTRO(TIPOUSUARIO)
+ );
+
+/****** Object:  Table [dbo].[RUTA]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[RUTA]
+(
+IDRUTA int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+NOMBRERUTA varchar(200) NULL,
+BHABILITADO int NULL
+ );
+
+ /****** Object:  Table [dbo].[ITEMS]    Script Date: 21/06/2020 11:38:29 ******/
+  CREATE TABLE [dbo].[ITEMS]
+(
+IDITEM int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+DESCRIPCION varchar(150) NOT NULL,
+BHABILITADO int NULL
+ );
+
+ /****** Object:  Table [dbo].[Tbl_Category]    Script Date: 12/2/2020 2:59:39 PM ******/
+CREATE TABLE [dbo].[Tbl_Category]
+(
+CategoryId int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+NombreCategoria varchar(200) NULL,
+BHABILITADO int NULL
+ );
+
+  /****** Object:  Table [dbo].[Tbl_Category]    Script Date: 12/2/2020 2:59:39 PM ******/
+CREATE TABLE [dbo].[Tbl_TIPO]
+(
+IDTIPOVENTA  int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+TIPOVENTA varchar(200) NULL,
+BHABILITADO int NULL,
+ );
+
+/****** Object:  Table [dbo].[CLIENTES]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[CLIENTES]
+(
+IDCLIENTE int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+CLIENTE varchar(100) NOT NULL,
+NUIP varchar(100) NOT NULL,
+DIRECCION varchar(200) NOT NULL,
+TELEFONO varchar(200) NOT NULL,
+CIUDAD varchar(100) NOT NULL,
+EMAIL varchar(200) NOT NULL,
+IDRUTA int REFERENCES RUTA(IDRUTA)NOT NULL,
+BHABILITADO int NULL,
+TIPOUSUARIO char(1) NOT NULL,
+CONSTRAINT fk_TIPOUSUARIO_CLIENTES FOREIGN KEY (TIPOUSUARIO) REFERENCES TIPOUSUARIOREGISTRO(TIPOUSUARIO)
+ );
+
+/****** Object:  Table [dbo].[REFERENCIAS]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[REFERENCIAS]
+(
+IDREF int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+REF varchar(100)NOT NULL,
+DESCRIPCION varchar(200)NOT NULL,
+CANT float NOT NULL,
+VALCOSTO_UNI float NOT NULL,
+VALUNI_VENTA float NOT NULL,
+CANT_MINIMA float NOT NULL,
+VALCOSTO_TOTAL float NOT NULL,
+VALVENTA_TOTAL float NOT NULL,
+IMAGEN varchar(max)NOT NULL,
+UNI_MEDIDA varchar(100)NOT NULL,
+CategoryId int  NULL,
+BHABILITADO int  NULL,
+VALMIN_VENTA float  NULL,
+PORCENTAJE float null
+CONSTRAINT fk_Category FOREIGN KEY (CategoryId) REFERENCES  Tbl_Category(CategoryId)
+);
+
+/****** Object:  Table [dbo].[CLIENTES]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[PROVEEDORES]
+(
+IDPROVEEDOR int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+PROVEEDOR varchar(100) NOT NULL,
+NUIP varchar(100) NOT NULL,
+DIRECCION varchar(200) NOT NULL,
+TELEFONO varchar(200) NOT NULL,
+CIUDAD varchar(100) NOT NULL,
+EMAIL varchar(200) NOT NULL,
+BHABILITADO int NULL
+ );
+
+/****** Object:  Table [dbo].[COMPRAS]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[COMPRAS]
+(
+IDCOMPRA int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+FACTURA varchar(50) NOT NULL,
+IDREF int,
+CANT float NOT NULL,
+VALCOSTO_UNI float NOT NULL,
+PROVEEDOR varchar(150) NOT NULL,
+MONTO_TOTAL float NOT NULL,
+TIPO varchar(50) NOT NULL,
+FECHACOMPRA datetime NOT NULL,
+FECHAPAGO datetime NOT NULL,
+IDPROVEEDOR int NOT NULL,
+BHABILITADO int null,
+CONSTRAINT fk_COMPRAS_REFERENCIAS FOREIGN KEY (IDREF) REFERENCES REFERENCIAS (IDREF),
+CONSTRAINT fk_COMPRAS_PROVEEDORES FOREIGN KEY (IDPROVEEDOR) REFERENCES PROVEEDORES (IDPROVEEDOR)
+);
+
+/****** Object:  Table [dbo].[DEVCOMPRAS]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[DEVCOMPRAS]
+(
+IDCOMPRA int NOT NULL,
+FACTURA varchar(50)NOT NULL,
+IDREF int,
+CANT float NOT NULL,
+VALCOSTO_UNI float NOT NULL,
+PROVEEDOR varchar(150)NOT NULL,
+MONTO_TOTAL float NOT NULL,
+TIPO varchar(50)NOT NULL,
+FECHACOMPRA datetime NOT NULL,
+FECHAPAGO datetime NOT NULL,
+CONSTRAINT fk_DEVCOMPRAS_REFERENCIAS FOREIGN KEY (IDREF) REFERENCES REFERENCIAS (IDREF)
+);
+
+/****** Object:  Table [dbo].[CARROS]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[CARROS]
+(
+IDCARRO int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+PLACA varchar(100) NULL,
+BHABILITADO int NULL
+ );
+
+/****** Object:  Table [dbo].[VENTA_PROD]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[VENTA_PROD](
+IDVENTA varchar(50)NOT NULL PRIMARY KEY CLUSTERED,
+REMISION varchar(10)NOT NULL,
+IDREF int,
+DESCRIPCION varchar(200)NOT NULL,
+NUIP varchar(100) NOT NULL,
+VALUNI_VENTA float NOT NULL,
+CANT float NOT NULL,
+MONTO_TOTAL float NOT NULL,
+TIPO varchar(50) NOT NULL,
+FECHAVENTA datetime NOT NULL,
+FECHAPAGO datetime NOT NULL,
+IDCLIENTE int NOT NULL,
+UTILIDAD float NULL,
+USUARIO varchar(50),
+CONSTRAINT fk_REFERENCIAS_VENTAS_PROD FOREIGN KEY (IDREF) REFERENCES REFERENCIAS (IDREF),
+CONSTRAINT fk_CLIENTES_VENTAS_PROD FOREIGN KEY (IDCLIENTE) REFERENCES CLIENTES (IDCLIENTE)
+);
+
+/****** Object:  Table [dbo].[VENTA_PROD]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[VENTA_PRODWEB](
+IDWEB  int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+IDREF int NOT NULL,
+DESCRIPCION varchar(200)NOT NULL,
+VALUNI_VENTA float NOT NULL,
+CANT float NOT NULL,
+MONTO_TOTAL float NOT NULL,
+TIPO varchar(50) NOT NULL,
+FECHAVENTA datetime NOT NULL,
+USUARIO varchar (50) NOT NULL,
+INFO1 varchar(max) NOT NULL,
+INFO2 varchar(max) NOT NULL,
+INFO3 varchar(max) NOT NULL,
+BHABILITADO int,
+CONSTRAINT fk_REFERENCIAS_VENTAS_PRODWEB FOREIGN KEY (IDREF) REFERENCES REFERENCIAS (IDREF)
+);
+
+/****** Object:  Table [dbo].[DEVENTA_PROD]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[DEVENTA_PROD](
+IDVENTA varchar(50)NOT NULL,
+REMISION varchar(10)NOT NULL,
+IDREF int,
+DESCRIPCION varchar(200)NOT NULL,
+NUIP varchar(100) NOT NULL,
+VALUNI_VENTA float NOT NULL,
+CANT float NOT NULL,
+MONTO_TOTAL float NOT NULL,
+TIPO varchar(50) NOT NULL,
+FECHAVENTA datetime NOT NULL,
+FECHAPAGO datetime NOT NULL,
+CONSTRAINT fk_REFERENCIAS_DEVENTAS FOREIGN KEY (IDREF) REFERENCES  REFERENCIAS (IDREF),
+CONSTRAINT fk_VENTAPROD_DEVENTAS FOREIGN KEY (IDVENTA) REFERENCES  VENTA_PROD (IDVENTA)
+);
+
+/****** Object:  Table [dbo].[GASTOS]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[GASTOS]
+(
+COMPROVANTE varchar(20)NOT NULL,
+FECHA datetime NOT NULL,
+DESCRIPCION varchar(150)NOT NULL,
+MONTO float NOT NULL,
+BENEFICIARIO varchar(100) NOT NULL,
+NUIP varchar(100) NOT NULL,
+DESCRIPCION_DETALLADA varchar(150)NOT NULL,
+BHABILITADO int null
+);
+
+/****** Object:  Table [dbo].[COMPRASCREDITO]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[COMPRASCREDITO]
+(
+ID int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+FACTURA varchar(50)NOT NULL,
+PROVEEDOR varchar(150)NOT NULL,
+MONTODEUDA float NOT NULL,
+TIPO varchar(50)NOT NULL,
+FECHAPAGO datetime NOT NULL,
+BHABILITADO int null
+);
+
+/****** Object:  Table [dbo].[VENTASCREDITO]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[VENTASCREDITO]
+(
+ID int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+REMISION varchar(10)NOT NULL,
+NUIP varchar(100) NOT NULL,
+MONTODEUDA float NOT NULL,
+TIPO varchar(50) NOT NULL,
+FECHAPAGO datetime NOT NULL,
+IDCLIENTE int NOT NULL,
+BHABILITADO int NULL,
+IDCARRO int NOT NULL,
+CONSECUTIVO varchar(50) NOT NULL,
+CONSTRAINT fk_CLIENTES_VENTASCRED FOREIGN KEY (IDCLIENTE) REFERENCES CLIENTES (IDCLIENTE),
+CONSTRAINT fk_CARROS_VENTASCRED FOREIGN KEY (IDCARRO) REFERENCES CARROS (IDCARRO)
+);
+
+/****** Object:  Table [dbo].[ABONOSCOMPRASCREDITO]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[ABONOSCOMPRASCREDITO]
+(
+ID int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+FACTURA varchar(50)NOT NULL,
+PROVEEDOR varchar(100) NOT NULL,
+ABONO float NOT NULL,
+TIPO varchar(50) NOT NULL,
+FECHABONO datetime NOT NULL,
+FECHAPAGO datetime NOT NULL,
+IDPROVEEDOR int NOT NULL,
+BHABILITADO int null
+CONSTRAINT fk_ABONOCOMPRAS_CREDITO FOREIGN KEY (IDPROVEEDOR) REFERENCES PROVEEDORES (IDPROVEEDOR)
+);
+
+/****** Object:  Table [dbo].[LIBRODIARIO]    Script Date: 21/06/2020 11:38:29 ******/
+CREATE TABLE [dbo].[LIBRODIARIO]
+(
+VENTAS float  NOT NULL,
+COMPRAS float   NOT NULL,
+GASTOS float  NOT NULL,
+VENTASCRED float  NOT NULL,
+AB_COMPRAS float  NOT NULL,
+UTILIDAD float  NOT NULL,
+FECHA datetime NOT NULL
+ );
+
+CREATE TABLE [dbo].[ABONOSVENTASCREDITO]
+(
+ID int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+REMISION varchar(10)NOT NULL,
+NUIP varchar(100) NOT NULL,
+ABONO float NOT NULL,
+TIPO varchar(50) NOT NULL,
+FECHABONO datetime NOT NULL,
+FECHAPAGO datetime NOT NULL,
+IDUSUARIO int NOT NULL,
+IDCLIENTE int NOT NULL,
+BHABILITADO int NULL,
+IDCARRO int NOT NULL,
+CONSECUTIVO varchar(50) NOT NULL,
+CONSTRAINT fk_USUARIOS_ABONOSVENTASCRED FOREIGN KEY (IDUSUARIO) REFERENCES USUARIOS (IDUSUARIO),
+CONSTRAINT fk_CLIENTES_ABONOSVENTASCRED FOREIGN KEY (IDCLIENTE) REFERENCES CLIENTES (IDCLIENTE),
+CONSTRAINT fk_CARROS_ABONOSVENTASCRED FOREIGN KEY (IDCARRO) REFERENCES CARROS (IDCARRO),
+);
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ValidarUsuarios]    Script Date: 23/05/2021 6:32:31 p.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ValidarUsuarios]
+@usuario varchar (100),
+@contraseña varchar (100)  
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[USUARIOS] where [USUARIO]=@usuario and [CONTRASEÑA]=@contraseña and [IID]= 1
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+
+
+/***************  PROCEDIMIENTOS ALMACENADOS PARA REFERENCIAS********************/
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaRef]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaRef]
+@ref varchar(50)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[REFERENCIAS] WHERE [REF]=@ref
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaRef2]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaRef2]
+@descripcion varchar(200)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[REFERENCIAS] WHERE [DESCRIPCION]=@descripcion
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaRef3]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaRef3]
+@ref int
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[REFERENCIAS] WHERE [IDREF]=@ref
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_MostrarRef]    Script Date: 20/01/2020 11:38:37 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA CONSULTAR TODO EN UN DATAGRID  SEGUN PARAMETROS */
+ALTER PROCEDURE [dbo].[Sp_MostrarRef]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT [IDREF],[REF],[DESCRIPCION],[CANT],[VALCOSTO_UNI],[VALUNI_VENTA],[CANT_MINIMA],[VALCOSTO_TOTAL],[VALVENTA_TOTAL],[VALMIN_VENTA]
+FROM [dbo].[REFERENCIAS]
+WHERE [BHABILITADO] =1
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_MostrarCategoria]    Script Date: 20/01/2020 11:38:37 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA CONSULTAR TODO EN UN DATAGRID  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_MostrarCategoria]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT * FROM [dbo].[Tbl_Category]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/*PROCEDIMIENTO ALMACENADO PARA MODIFICAR LA REFERENCIA EN BD SEGUN PARAMETROS*/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ModificaRef]
+@ref varchar(100),
+@Descripcion varchar(200),
+@Cant float ,
+@Costounidad  float ,
+@ValventaUni  float ,
+@Cantminima  float ,
+@Costototal  float ,
+@Ventatotal float,
+@Imagen varchar(200),
+@Unimed varchar(100),
+@Categoria int,
+@Habilitado int,
+@valventamin float,
+@porcentaje float
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[REFERENCIAS] SET [REF]=@ref,[DESCRIPCION]=@Descripcion,[CANT]=@Cant,[VALCOSTO_UNI]=@Costounidad,[VALUNI_VENTA]=@ValventaUni,[CANT_MINIMA]=@Cantminima,[VALCOSTO_TOTAL]=@Costototal,[VALVENTA_TOTAL]=@Ventatotal,[IMAGEN]=@Imagen,[UNI_MEDIDA]=@Unimed,[CategoryId]=@Categoria,[BHABILITADO]=@Habilitado, [VALMIN_VENTA]=@valventamin, [PORCENTAJE]=@porcentaje
+WHERE [REF]=@ref
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaRef   Script Date: 13/01/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE  PROCEDURE [dbo].[Sp_GuardaRef]
+@ref varchar(100),
+@Descripcion varchar(200),
+@Cant float ,
+@Costounidad  float ,
+@ValventaUni  float ,
+@Cantminima  float ,
+@Costototal  float ,
+@Ventatotal float,
+@Imagen varchar(200),
+@Unimed varchar(100),
+@Categoria int,
+@Habilitado int,
+@valventamin float,
+@porcentaje float
+AS
+BEGIN TRY
+	BEGIN TRAN 
+insert into  [dbo].[REFERENCIAS]([REF],[DESCRIPCION],[CANT],[VALCOSTO_UNI],[VALUNI_VENTA],[CANT_MINIMA],[VALCOSTO_TOTAL],[VALVENTA_TOTAL],[IMAGEN],[UNI_MEDIDA],[CategoryId],[BHABILITADO],[VALMIN_VENTA],[PORCENTAJE])
+values(@ref,@Descripcion,@Cant,@Costounidad,@ValventaUni,@Cantminima,@Costototal,@Ventatotal,@Imagen,@Unimed,@Categoria,@Habilitado,@valventamin,@porcentaje)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_Validaref]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA VALIDAR REFERENCIA EN BDREFERENCIAS SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_Validaref]
+@ref varchar (100),
+@Descripcion varchar(200)
+AS 
+BEGIN TRY
+		BEGIN TRAN 
+			SELECT COUNT(*) FROM [dbo].[REFERENCIAS]  where [REF]=@ref and [DESCRIPCION]=@Descripcion
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_Validareferencia]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA VALIDAR REFERENCIA EN BDREFERENCIAS SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_Validareferencia]
+@ref varchar (100)
+AS 
+BEGIN TRY
+		BEGIN TRAN 
+			SELECT COUNT(*) FROM [dbo].[REFERENCIAS]  where [REF]=@ref
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_ValidarDescripcion]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA VALIDAR REFERENCIA EN BDREFERENCIAS SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ValidarDescripcion]
+@Descripcion varchar(200)
+AS 
+BEGIN TRY
+		BEGIN TRAN 
+			SELECT COUNT(*) FROM [dbo].[REFERENCIAS]  where [DESCRIPCION]=@Descripcion
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaRef]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaRef]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([DESCRIPCION]) FROM [dbo].[REFERENCIAS]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaRef]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaReferefencia]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([REF]) FROM [dbo].[REFERENCIAS]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/**************** PROCEDIMIENTOS   ALAMACENADOS PARA CLIENTES  *****************************/
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaCli]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaCli]
+@cliente varchar(100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT* FROM [dbo].[CLIENTES] WHERE [CLIENTE]=@cliente
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaCli2]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaCli2]
+@nuip varchar(100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[CLIENTES] WHERE [NUIP]=@nuip
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaCliente]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaCliente]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([CLIENTE]) FROM [dbo].[CLIENTES] WHERE [BHABILITADO]='1'
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaNuipCliente]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaNuipCliente]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([NUIP]) FROM [dbo].[CLIENTES]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaRuta]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaRuta]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT [IDRUTA],[NOMBRERUTA] FROM [dbo].[RUTA]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaNuip]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaNuip]
+@cliente varchar(100)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT [NUIP] FROM [dbo].[CLIENTES] WHERE [CLIENTE]=@cliente
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_ValidaCliente]    Script Date: 13/01/2020 8:07:06 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA BUSCAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ValidaCliente]
+@cliente varchar(200),
+@nuip varchar(100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT COUNT(*) FROM [dbo].[CLIENTES] where [CLIENTE]=@cliente and [NUIP]=@nuip
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaCliente]    Script Date: 13/01/2020 8:07:06 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA MODIFICAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ModificaCliente]
+@cliente varchar(100),
+@nuip varchar(100),
+@direccion varchar(200),
+@telefono varchar(200),
+@ciudad varchar(100),
+@mail varchar(200),
+@ruta int,
+@habiltado int,
+@tipo as char(1)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[CLIENTES] SET [CLIENTE]=@cliente,[NUIP]=@nuip,[DIRECCION]=@direccion,[TELEFONO]=@telefono,[CIUDAD]=@ciudad,[EMAIL]=@mail,[IDRUTA]=@ruta,[BHABILITADO]=@habiltado,[TIPOUSUARIO]=@tipo
+WHERE [NUIP]=@nuip
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaCliente]    Script Date: 13/01/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA GUARDAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE  PROCEDURE [dbo].[Sp_GuardaCliente]
+@cliente varchar(100),
+@nuip varchar(100),
+@direccion varchar(200),
+@telefono varchar(200),
+@ciudad varchar(100),
+@mail varchar(200),
+@ruta int,
+@habiltado int,
+@tipo as char(1)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+insert into  [dbo].[CLIENTES]([CLIENTE],[NUIP],[DIRECCION],[TELEFONO],[CIUDAD],[EMAIL],[IDRUTA],[BHABILITADO],[TIPOUSUARIO])
+values(@cliente,@nuip,@direccion,@telefono,@ciudad,@mail,@ruta,@habiltado,@tipo)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_EliminarClientes]    Script Date: 13/01/2020 8:06:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA ELIMINAR DATOS DE UN CAMPO ESPECIFICO EN FUNCION DE UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_EliminarClientes]
+@nuip varchar(100)
+AS	
+BEGIN TRY
+	BEGIN TRAN 
+DELETE FROM [dbo].[CLIENTES] WHERE [NUIP]=@nuip
+	COMMIT
+	END TRY
+BEGIN CATCH
+	ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaCliente]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA BUSCAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_BuscaCliente]
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[CLIENTES] 
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaCliente2]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA BUSCAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_BuscaCliente2]
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT [CLIENTE], [NUIP] FROM [dbo].[CLIENTES] 
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/****************************** PROCEDIMIENTOS ALMACENADOS COMPRAS   ****************************/
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_MostrarCompras2]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_MostrarCompras2] 
+@parametro varchar(150)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[COMPRAS] WHERE [FACTURA]=@parametro and [TIPO]='CREDITO'
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ValidFactura]    Script Date: 13/01/2020 8:07:06 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA BUSCAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ValidFactura]
+@factura varchar (50)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT COUNT(*) FROM [dbo].[COMPRAS] where [FACTURA]=@factura 
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****Object:  StoredProcedure [dbo].[Sp_CargaCboFcatura]    Script Date: 16/09/2020 8:57:32 p. m. ***********************/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CargaCboFactura]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT [FACTURA] FROM [dbo].[COMPRASCREDITO] WHERE [MONTODEUDA] <> '0'
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaReferencia]    Script Date: 13/01/2020 8:07:06 p. m. */
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA MODIFICAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ModificaReferencia]
+@ref int,
+@cant float ,
+@valtotcosto float ,
+@valtotventa float 
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[REFERENCIAS] SET [CANT]=@cant,[VALCOSTO_TOTAL]=@valtotcosto,[VALVENTA_TOTAL]=@valtotventa  
+WHERE [IDREF]=@ref
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaPendiente]   Script Date: 13/01/2020 8:07:06 p. m. */
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA MODIFICAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ModificaPendiente]
+@idventa int,
+@tipo varchar(50),
+@fecha datetime
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[VENTA_PROD] SET  [TIPO]=@tipo,[FECHAVENTA]=@fecha
+WHERE [IDVENTA]=@idventa
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/*PROCEDIMIENTO ALMACENADO PARA MODIFICAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ModificaPendiente2]
+@idventa int
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[VENTA_PRODWEB] SET  [BHABILITADO]= 0
+WHERE [IDWEB]=@idventa
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+/*'Response.Write("<script>alert('Revise su conexion de datos')</script>")*/
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaReferenciaPP]    Script Date: 13/01/2020 8:07:06 p. m. */
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA MODIFICAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ModificaReferenciaPP]
+@ref int,
+@cant float ,
+@costopp float ,
+@valtotcosto float ,
+@valtotventa float 
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[REFERENCIAS] SET [CANT]=@cant,[VALCOSTO_UNI]=@costopp,[VALCOSTO_TOTAL]=@valtotcosto,[VALVENTA_TOTAL]=@valtotventa  
+WHERE [IDREF]=@ref
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ConsultaCredito]    Script Date: 13/01/2020 8:07:06 p. m. */
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ConsultaCredito]
+@proveedor varchar(150)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM  [dbo].[COMPRAS]
+WHERE [PROVEEDOR]=@proveedor and [TIPO]='CREDITO' 
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_ConsecutivoCompras]    Script Date: 21/01/2020 8:51:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*SP PARA VALIDAR SI EL PEDIDO EXISTE EN LA BDPEDIDOS*/ 
+CREATE PROCEDURE [dbo].[Sp_ConsecutivoCompras]
+AS 
+BEGIN TRY
+		BEGIN TRAN
+		SELECT COUNT(IDCOMPRA) AS TOTALREG FROM [dbo].[COMPRAS]
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaCliente]    Script Date: 13/01/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA GUARDAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE  PROCEDURE [dbo].[Sp_GuardaCompra]
+@factura varchar(50),
+@ref int,
+@cant float ,
+@valcosto float ,
+@proveedor varchar(150),
+@montototal float ,
+@tipo varchar(50),
+@fechacompra datetime,
+@fechapago datetime,
+@idproveedor int,
+@bhabilitado int
+AS
+BEGIN TRY
+	BEGIN TRAN 
+insert into  [dbo].[COMPRAS]([FACTURA],[IDREF],[CANT],[VALCOSTO_UNI],[PROVEEDOR],[MONTO_TOTAL],[TIPO],[FECHACOMPRA],[FECHAPAGO],[IDPROVEEDOR],[BHABILITADO])
+values(@factura,@ref,@cant,@valcosto,@proveedor,@montototal,@tipo,@fechacompra,@fechapago,@idproveedor,@bhabilitado)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaAbonoComprasCredito]  Script Date: 19/07/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_GuardaAbonoComprasCredito]
+@factura varchar(50),
+@proveedor varchar(100),
+@abono float ,
+@tipo varchar (50),
+@fechabono datetime,
+@fechapago datetime,
+@idproveedor int,
+@bhabilitado int
+AS
+BEGIN TRY
+	BEGIN TRAN 
+    INSERT INTO [dbo].[ABONOSCOMPRASCREDITO]([FACTURA],[PROVEEDOR],[ABONO],[TIPO],[FECHABONO],[FECHAPAGO],[IDPROVEEDOR],[BHABILITADO])
+    VALUES(@factura,@proveedor,@abono,@tipo,@fechabono,@fechapago,@idproveedor,@bhabilitado)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaComprasCredito]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaComprasCredito]
+@parametro varchar(150)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT[ID],[FACTURA],[PROVEEDOR],[MONTODEUDA],[TIPO],[FECHAPAGO] FROM [dbo].[COMPRASCREDITO] WHERE [PROVEEDOR]=@parametro and [MONTODEUDA] <> '0'
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaCompraCredito]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaCompraCredito]
+@parametro varchar(150)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT[FACTURA],[PROVEEDOR],[MONTO_TOTAL],[TIPO],[FECHAPAGO] FROM [dbo].[COMPRAS] WHERE [FACTURA]=@parametro and [TIPO]='CREDITO'
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_ConsultaCopras]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ConsultaCopras]
+@fecha1 datetime,
+@fecha2 datetime
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[COMPRAS] WHERE [FECHACOMPRA] BETWEEN @fecha1 and @fecha2
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/**************** PROCEDIMIENTOS   ALAMACENADOS PARA PROVEEDORES  *****************************/
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaProv]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaProv]
+@proveedor varchar(100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[PROVEEDORES] WHERE [PROVEEDOR]=@proveedor
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaProv]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaProv2]
+@proveedor varchar(200)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[PROVEEDORES] WHERE [PROVEEDOR]=@proveedor
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaProveedor]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaProveedor]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([PROVEEDOR]) FROM [dbo].[PROVEEDORES]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaNuipProveedor]    Script Date: 25/07/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaNuipProveedor]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([NUIP]) FROM [dbo].[PROVEEDORES]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_ValidaProveedor]    Script Date: 13/01/2020 8:07:06 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA BUSCAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ValidaProveedor]
+@proveedor varchar (200),
+@nuip varchar (100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT COUNT(*) FROM [dbo].[PROVEEDORES] WHERE [PROVEEDOR]=@proveedor and [NUIP]=@nuip
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaProveedor]    Script Date: 13/01/2020 8:07:06 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA MODIFICAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ModificaProveedor]
+@proveedor varchar(100),
+@nuip varchar(100),
+@direccion varchar(200),
+@telefono varchar(200),
+@ciudad varchar(100),
+@mail varchar(200),
+@bhabilitado int null
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[PROVEEDORES] SET [PROVEEDOR]=@proveedor,[NUIP]=@nuip,[DIRECCION]=@direccion,[TELEFONO]=@telefono,[CIUDAD]=@ciudad,[EMAIL]=@mail,[BHABILITADO] =@bhabilitado
+WHERE [NUIP]=@nuip
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaCliente]    Script Date: 13/01/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA GUARDAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE  PROCEDURE [dbo].[Sp_GuardaProveedor]
+@proveedor varchar(100),
+@nuip varchar(100),
+@direccion varchar(200),
+@telefono varchar(200),
+@ciudad varchar(100),
+@mail varchar(200),
+@bhabilitado int
+AS
+BEGIN TRY
+	BEGIN TRAN 
+insert into  [dbo].[PROVEEDORES]([PROVEEDOR],[NUIP],[DIRECCION],[TELEFONO],[CIUDAD],[EMAIL],[BHABILITADO])
+values(@proveedor,@nuip,@direccion,@telefono,@ciudad,@mail,@bhabilitado)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_EliminarClientes]    Script Date: 13/01/2020 8:06:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA ELIMINAR DATOS DE UN CAMPO ESPECIFICO EN FUNCION DE UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_EliminarProveedor]
+@nuip varchar(100)
+AS	
+BEGIN TRY
+	BEGIN TRAN 
+DELETE FROM [dbo].[PROVEEDORES] WHERE [NUIP]=@nuip
+	COMMIT
+	END TRY
+BEGIN CATCH
+	ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaProveedor]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA BUSCAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_BuscaProveedor]
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT [IDPROVEEDOR],[PROVEEDOR],[DIRECCION],[TELEFONO],[CIUDAD],[EMAIL] FROM [dbo].[PROVEEDORES] 
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/************************ PROCEDIMIENTOS ALMACENADOS PARA USUARIOS*************************/
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaUser]    Script Date: 8/07/2020 3:26:15 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaUser]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT [IDUSUARIO],[USUARIO],[CONTRASEÑA] FROM [dbo].[USUARIOS] 
+
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaUsuario]    Script Date: 8/07/2020 3:26:15 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].Sp_BuscaUsuario
+@idusuario int
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT * FROM [dbo].[USUARIOS] where [IDUSUARIO]=@idusuario
+
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaidUsuario]    Script Date: 8/07/2020 3:26:15 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].Sp_BuscaidUsuario
+@usuario varchar(100)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT * FROM [dbo].[USUARIOS] where [USUARIO]=@usuario
+
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_EliminaUser]    Script Date: 8/07/2020 3:27:23 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_EliminaUser]
+@user varchar(100) 
+AS
+BEGIN TRY
+	BEGIN TRAN 
+DELETE FROM [dbo].[USUARIOS] WHERE [USUARIO]=@user
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaUser]    Script Date: 8/07/2020 3:29:09 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_GuardaUser]
+@user varchar(100),
+@contraseña varchar(100)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+INSERT INTO [dbo].[USUARIOS]([USUARIO],[CONTRASEÑA])
+VALUES(@user,@contraseña)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaUser]    Script Date: 8/07/2020 3:29:44 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ModificaUser]
+@user varchar(100),
+@contraseña varchar(100)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[USUARIOS] SET [USUARIO]=@user,[CONTRASEÑA]=@contraseña
+WHERE   [USUARIO]=@user
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/*********************    PROCEDIMIENTOS ALMACENADOS PARA VENTAS     ***************************************/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA CARGAR DATOS EN UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_CargaCboRemision]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([REMISION]) FROM [dbo].[VENTA_PROD] 
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA CARGAR DATOS EN UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_CargaCboRemision3]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([REMISION]) FROM [dbo].[VENTA_PROD] 
+WHERE [MONTO_TOTAL] <> 0
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaVentaXRemeision]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaVentaXRemeision]
+@parametro varchar(100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[VENTA_PROD] WHERE [REMISION]=@parametro and [MONTO_TOTAL] <>'0'
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ValidaVentaCredito]    Script Date: 13/01/2020 8:07:06 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA BUSCAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ValidaVentaCredito]
+@remision varchar(10)
+AS
+BEGIN TRY
+   BEGIN TRAN 
+SELECT COUNT(*) FROM [dbo].[VENTASCREDITO] where [REMISION]=@remision
+   COMMIT
+	END TRY
+	BEGIN CATCH
+ ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****Object:  StoredProcedure [dbo].[Sp_CargaCboRemision2]    Script Date: 16/09/2020 8:57:32 p. m. ***********************/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA CARGAR DATOS EN UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_CargaCboRemision2]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT [REMISION] FROM [dbo].[VENTASCREDITO] WHERE [MONTODEUDA] <> '0'
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/***************Object:  StoredProcedure [dbo].[Sp_CargaCboNuip]    Script Date: 16/09/2020 8:57:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CargaCboNuip]
+@parametro varchar(10)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([NUIP]) FROM [dbo].[VENTA_PROD] where [REMISION]=@parametro
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/***************Object:  StoredProcedure [dbo].[Sp_CargaCboCliente]    Script Date: 16/09/2020 8:57:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CargaCboCliente]
+@parametro varchar(10)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT [CLIENTE] FROM [dbo].[CLIENTES] where [NUIP]=@parametro
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/***************Object:  StoredProcedure [dbo].[Sp_FechaTipo]    Script Date: 16/09/2020 8:57:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_FechaTipo]
+@remision varchar(10)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT [TIPO],[FECHAVENTA],[FECHAPAGO] FROM [dbo].[VENTA_PROD] where [REMISION]=@remision
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/***************Object:  StoredProcedure [dbo].[Sp_CargaCboTipo]    Script Date: 16/09/2020 8:57:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CargaCboTipo]
+@parametro varchar(10)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([TIPO]) FROM [dbo].[VENTA_PROD] where [REMISION]=@parametro
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/***************Object:  StoredProcedure [dbo].[Sp_CargaCboTipo]    Script Date: 16/09/2020 8:57:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CargaCboFechaPago]
+@remision varchar(10)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([FECHAPAGO]) FROM [dbo].[VENTA_PROD] where [REMISION]=@remision
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ConsecutivoVentas]    Script Date: 21/01/2020 8:51:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ConsecutivoVentas]
+AS 
+BEGIN TRY
+		BEGIN TRAN
+		SELECT COUNT([REMISION]) AS TOTALREG FROM [dbo].[VENTA_PROD]
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ConsecutivoVenta2]    Script Date: 21/01/2020 8:51:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ConsecutivoVentas2]
+AS 
+BEGIN TRY
+		BEGIN TRAN
+		SELECT MAX([REMISION]) FROM [dbo].[VENTA_PROD]
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_MostrarVentaTotal]    Script Date: 8/07/2020 3:26:15 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_MostrarVentaTotal]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT * FROM [dbo].[VENTA_PROD]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaVentaTot]  Script Date: 19/07/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_GuardaVentaTotal]
+@idventa varchar(50),
+@Remision varchar(10),
+@Ref int,
+@Descripcion varchar(150),
+@Nuip varchar(100),
+@Valuniventa float ,
+@Cant float ,
+@Monto float ,
+@Tipo varchar (10),
+@Fechaventa datetime,
+@Fechapago datetime,
+@idcliente int,
+@Utilidad float,
+@usuario varchar(50)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+    INSERT INTO [dbo].[VENTA_PROD]([IDVENTA],[REMISION],[IDREF],[DESCRIPCION],[NUIP],[VALUNI_VENTA],[CANT],[MONTO_TOTAL],[TIPO],[FECHAVENTA],[FECHAPAGO],[IDCLIENTE],[UTILIDAD],[USUARIO])
+    VALUES(@idventa,@Remision,@Ref,@Descripcion,@Nuip,@Valuniventa,@Cant,@Monto,@Tipo,@Fechaventa,@Fechapago,@idcliente,@Utilidad,@usuario)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaAbonoVentaCredito]  Script Date: 19/07/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_GuardaAbonoVentaCredito]
+@remision varchar(10),
+@nuip varchar(100),
+@abono float ,
+@tipo varchar (50),
+@fechabono datetime,
+@fechapago datetime,
+@idusuario int ,
+@idcliente int ,
+@bhabilitado int,
+@placa int ,
+@consecutivo varchar(50)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+    INSERT INTO [dbo].[ABONOSVENTASCREDITO]([REMISION],[NUIP],[ABONO],[TIPO],[FECHABONO],[FECHAPAGO],[IDUSUARIO],[IDCLIENTE],[BHABILITADO],[IDCARRO],[CONSECUTIVO])
+    VALUES(@remision,@nuip,@abono,@tipo,@fechabono,@fechapago,@idusuario,@idcliente,@bhabilitado,@placa,@consecutivo)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaVentaCredito]  Script Date: 19/07/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_GuardaVentaCredito]
+@remision varchar(10),
+@nuip varchar(100),
+@monto float ,
+@tipo varchar (50),
+@fechapago datetime,
+@idcliente int,
+@bhabilitado int,
+@placa int,
+@consecutivo varchar(50)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+    INSERT INTO [dbo].[VENTASCREDITO]([REMISION],[NUIP],[MONTODEUDA],[TIPO],[FECHAPAGO],[IDCLIENTE],[BHABILITADO],[IDCARRO],[CONSECUTIVO])
+    VALUES(@remision,@nuip,@monto,@tipo,@fechapago,@idcliente,@bhabilitado,@placa,@consecutivo)
+COMMIT
+
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaVentaCredito]  Script Date: 19/07/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ModificarVentaCredito]
+@remision varchar(10),
+@abono float 
+AS
+BEGIN TRY
+	BEGIN TRAN 
+	   UPDATE [dbo].[VENTASCREDITO] SET [REMISION]=@remision,[MONTODEUDA]=@abono 
+	   WHERE [REMISION]=@remision
+
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscarVentaCredito]  Script Date: 19/07/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+/** Procedimiento alamacenado para buscar en todo en una Tabla**/
+CREATE PROCEDURE [dbo].[Sp_BuscarVentaCredito]
+@remision varchar(10)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+       SELECT [REMISION],[NUIP],[MONTODEUDA],[TIPO],[FECHAPAGO] FROM  [dbo].[VENTASCREDITO] 
+	   WHERE [REMISION]=@remision
+    COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaDevVenta]  Script Date: 19/07/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_GuardaDevVenta]
+@idventa varchar(50),
+@Remision varchar(10),
+@Ref int,
+@Descripcion varchar(200),
+@Nuip varchar(100),
+@Valuniventa float ,
+@Cant float ,
+@Monto float ,
+@Tipo varchar (50),
+@Fechaventa datetime,
+@Fechapago datetime
+AS
+BEGIN TRY
+	BEGIN TRAN 
+    INSERT INTO [dbo].[DEVENTA_PROD]([IDVENTA],[REMISION],[IDREF],[DESCRIPCION],[NUIP],[VALUNI_VENTA],[CANT],[MONTO_TOTAL],[TIPO],[FECHAVENTA],[FECHAPAGO])
+    VALUES(@idventa,@Remision,@Ref,@Descripcion,@Nuip,@Valuniventa,@Cant,@Monto,@Tipo,@Fechaventa,@Fechapago)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaUser]    Script Date: 8/07/2020 3:29:44 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ModificaVenta]
+@idventa varchar(10),
+@cant float ,
+@monto float 
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[VENTA_PROD] SET [IDVENTA]=@idventa,[CANT]=@cant,[MONTO_TOTAL]=@monto
+WHERE [IDVENTA]=@idventa
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaVentaCredito]    Script Date: 8/07/2020 3:29:44 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ModificaVentaCredito]
+@remision varchar(50),
+@monto float ,
+@tipo varchar(10)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[VENTA_PROD] SET [REMISION]=@remision,[MONTO_TOTAL]=@monto,[TIPO]=@tipo
+WHERE [REMISION]=@remision 
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_EliminarClientes]    Script Date: 13/01/2020 8:06:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA ELIMINAR DATOS DE UN CAMPO ESPECIFICO EN FUNCION DE UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_EliminarVenta]
+@id int
+AS	
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[VENTA_PROD] SET [IDVENTA]=@id,[DESCRIPCION]='CANCELADO',[VALUNI_VENTA]='0', [CANT]='0',[MONTO_TOTAL]='0',[TIPO]='CANCELADO'
+WHERE [IDVENTA]=@id
+	COMMIT
+	END TRY
+BEGIN CATCH
+	ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/*PROCEDIMIENTO ALMACENADO PARA ELIMINAR DATOS DE UN CAMPO ESPECIFICO EN FUNCION DE UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_EliminarCompra]
+@id int
+AS	
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[COMPRAS] SET [PROVEEDOR]='CANCELADO',[VALCOSTO_UNI]='0', [CANT]='0',[MONTO_TOTAL]='0',[TIPO]='CANCELADO'
+WHERE [IDCOMPRA]=@id
+	COMMIT
+	END TRY
+BEGIN CATCH
+	ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaVenta]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaVenta]
+@remision varchar(10)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[VENTA_PROD] WHERE [REMISION]=@remision
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaVenta2]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaVenta2]
+@parametro varchar(100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[VENTA_PROD] WHERE [REMISION]=@parametro and [MONTO_TOTAL] <>'0'
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaVentaPerdida]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaVentaPerdida]
+@parametro varchar(100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT R.[REF],V.[CANT],V.[MONTO_TOTAL],V.[IDVENTA],V.[REMISION],V.[VALUNI_VENTA],V.[DESCRIPCION] 
+FROM [dbo].[VENTA_PROD] V
+JOIN REFERENCIAS R ON R.IDREF = V.IDREF
+WHERE V.[REMISION]=@parametro and V.[MONTO_TOTAL] <>'0'
+	
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaVentaWeb]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaVentaWeb]
+@parametro varchar(100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT R.[REF],V.[CANT],V.[INFO1],V.[INFO2],V.[INFO3],V.[VALUNI_VENTA],V.[MONTO_TOTAL],V.[USUARIO],V.[TIPO],V.[IDWEB]
+FROM [dbo].[VENTA_PRODWEB] V
+JOIN REFERENCIAS R ON R.IDREF = V.IDREF
+WHERE V.[USUARIO]=@parametro and V.BHABILITADO=1
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+/****** Object:  StoredProcedure [dbo].[[Sp_BuscaVentaCredito]]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaVentaCredito]
+@parametro varchar(100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT[IDVENTA],[REMISION],[IDREF],[DESCRIPCION],[CANT],[VALUNI_VENTA],[MONTO_TOTAL] FROM [dbo].[VENTA_PROD] WHERE [REMISION]=@parametro and [TIPO]='CREDITO'
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaVenta3]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaVentasCredito]
+@nuip varchar(100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT[REMISION],[NUIP],[MONTODEUDA],[TIPO],[FECHAPAGO] FROM [dbo].[VENTASCREDITO] WHERE [NUIP]=@nuip and [MONTODEUDA]<>'0' 
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_EliminarClientes]    Script Date: 13/01/2020 8:06:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA ELIMINAR DATOS DE UN CAMPO ESPECIFICO EN FUNCION DE UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_EliminarVentaCredito]
+@remision varchar(50)
+AS	
+BEGIN TRY
+	BEGIN TRAN 
+DELETE FROM [dbo].[VENTASCREDITO] WHERE [REMISION]=@remision
+	COMMIT
+	END TRY
+BEGIN CATCH
+	ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/********         PROCEDIMIENTOS ALMACENADOS PARA DEVOLUCION EN COMPRAS             ************************/
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_CargaCboFctura]    Script Date: 21/01/2020 8:51:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA CARGAR DATOS EN UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_CargaCboFctura]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT(FACTURA) FROM [dbo].[COMPRAS] 
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_CargaCboFctura2]    Script Date: 21/01/2020 8:51:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA CARGAR DATOS EN UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_CargaCboFctura2]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT(FACTURA) FROM [dbo].[COMPRAS] 
+WHERE [MONTO_TOTAL] <> 0
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaCompraXFactura]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaCompraxFactura]
+@parametro varchar(50)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[COMPRAS] WHERE [FACTURA]=@parametro and [MONTO_TOTAL] <> '0'
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ConsecutivoDevCompras]    Script Date: 21/01/2020 8:51:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*SP PARA VALIDAR SI EL PEDIDO EXISTE EN LA BDPEDIDOS*/ 
+CREATE PROCEDURE [dbo].[Sp_ConsecutivoDevCompras]
+AS 
+BEGIN TRY
+		BEGIN TRAN
+		SELECT COUNT(IDCOMPRA) AS TOTALREG FROM [dbo].[DEVCOMPRAS]
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaConsecutivo]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaConsecutivo]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([IDCOMPRA]) FROM [dbo].[COMPRAS] WHERE [CANT] <> '0'
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaCompras]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaCompras]
+@parametro varchar(150)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+        SELECT* FROM [dbo].[COMPRAS] WHERE [PROVEEDOR]=@parametro 
+	COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[[Sp_BuscaCompras2]]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaCompras2]
+@parametro varchar(50)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT  C.[IDCOMPRA],C.[FACTURA],C.[IDREF],C.[CANT],C.[VALCOSTO_UNI],C.[MONTO_TOTAL], R.DESCRIPCION
+FROM[dbo].[COMPRAS] C
+JOIN REFERENCIAS R ON R.IDREF=C.IDREF
+WHERE [FACTURA]=@parametro and [TIPO] <> 'CANCELADO'
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscarComprasCredito]  Script Date: 19/07/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/** Procedimiento alamacenado para buscar en todo en una Tabla**/
+CREATE PROCEDURE [dbo].[Sp_BuscarComprasCredito]
+@factura varchar(50)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+       SELECT [ID],[FACTURA],[PROVEEDOR],[MONTODEUDA],[TIPO],[FECHAPAGO] FROM [dbo].[COMPRASCREDITO]
+	   WHERE [FACTURA]=@factura
+    COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_MostrarCompras]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_MostrarDevCompras]
+@parametro varchar(150)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[DEVCOMPRAS] WHERE [FACTURA]=@parametro
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaCompras]    Script Date: 13/01/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA GUARDAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ModificaCompras] 
+@idcompra int,
+@cant float ,
+@monto float 
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[COMPRAS] SET [CANT]=@cant,[MONTO_TOTAL]=@monto
+WHERE [IDCOMPRA]=@idcompra
+    COMMIT
+END TRY
+BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaCompraCXP]    Script Date: 13/01/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA GUARDAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ModificaCompraCXP] 
+@id int,
+@total float 
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[COMPRAS] SET [MONTO_TOTAL]=@total
+WHERE [IDCOMPRA]=@id
+    COMMIT
+END TRY
+BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaCliente]    Script Date: 13/01/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA GUARDAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE  PROCEDURE [dbo].[Sp_GuardaDevCompra]
+@idcompra int,
+@factura varchar(50),
+@ref int,
+@cant float ,
+@valcosto float ,
+@proveedor varchar(150),
+@montototal float ,
+@tipo varchar(50),
+@fechacompra datetime,
+@fechapago datetime                      
+AS
+BEGIN TRY
+	BEGIN TRAN 
+insert into  [dbo].[DEVCOMPRAS]([IDCOMPRA],[FACTURA],[IDREF],[CANT],[VALCOSTO_UNI],[PROVEEDOR],[MONTO_TOTAL],[TIPO],[FECHACOMPRA],[FECHAPAGO])
+values(@idcompra,@factura,@ref,@cant,@valcosto,@proveedor,@montototal,@tipo,@fechacompra,@fechapago)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_ConsultaCopras]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ConsultaDevCopras]
+@fecha1 datetime,
+@fecha2 datetime
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[COMPRAS] WHERE [FECHACOMPRA] BETWEEN @fecha1 and @fecha2
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaCompraCredito]  Script Date: 19/07/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_GuardaCompraCredito]
+@factura varchar(10),
+@proveedor varchar(100),
+@abono float ,
+@tipo varchar (50),
+@fechapago datetime
+AS
+BEGIN TRY
+	BEGIN TRAN 
+    INSERT INTO [dbo].[COMPRASCREDITO]([FACTURA],[PROVEEDOR],[MONTODEUDA],[TIPO],[FECHAPAGO])
+    VALUES(@factura,@proveedor,@abono,@tipo,@fechapago)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaCompra2]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaCompra2]
+@parametro varchar(50)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[COMPRAS] WHERE [FACTURA]=@parametro and [MONTO_TOTAL] <> '0'
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaComprasCredito]  Script Date: 19/07/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ModificarComprasCredito]
+@factura varchar(50),
+@abono float 
+AS
+BEGIN TRY
+	BEGIN TRAN 
+	   UPDATE [dbo].[COMPRASCREDITO] SET [FACTURA]=@factura,[MONTODEUDA]=@abono 
+	   WHERE [FACTURA]=@factura
+
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_EliminarAbonoCompra]    Script Date: 13/01/2020 8:06:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA ELIMINAR DATOS DE UN CAMPO ESPECIFICO EN FUNCION DE UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_EliminarAbonoCompra]
+@parametro varchar(20)
+AS	
+BEGIN TRY
+	BEGIN TRAN 
+DELETE FROM [dbo].[ABONOSCOMPRASCREDITO] WHERE [FACTURA]=@parametro
+	COMMIT
+	END TRY
+BEGIN CATCH
+	ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/********         PROCEDIMIENTOS ALMACENADOS PARA DEVOLUCION EN  VENTAS        ************************/
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ConsecutivoVentas]    Script Date: 21/01/2020 8:51:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_ConsecutivoDevVentas]
+AS 
+BEGIN TRY
+		BEGIN TRAN
+		SELECT COUNT([IDVENTA]) AS TOTALREG FROM [dbo].[DEVENTA_PROD]
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_MostrarDevVentaTotal]    Script Date: 8/07/2020 3:26:15 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_MostrarDevVentaTotal]
+@parametro varchar(50)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT * FROM [dbo].[DEVENTA_PROD] WHERE [REMISION]=@parametro
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaVentas]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaVentas]
+@idventa varchar(100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[VENTA_PROD] WHERE [IDVENTA]=@idventa
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaVentas]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaNuipVentas]
+@remision varchar(100)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT DISTINCT([NUIP]) FROM [dbo].[VENTA_PROD] WHERE [REMISION]=@remision
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaReferencia]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_BuscaReferencia]
+@ref varchar(200)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[REFERENCIAS] WHERE [REF]=@ref
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaRemision]   Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaRemision]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([IDVENTA]) FROM [dbo].[VENTA_PROD] WHERE [CANT]<>'0'
+
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaRefDeventas]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaRefDeventas]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT(IDREF) FROM [dbo].[VENTA_PROD]  WHERE [CANT]<>'0'
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_EliminarAbonoVentas]    Script Date: 13/01/2020 8:06:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA ELIMINAR DATOS DE UN CAMPO ESPECIFICO EN FUNCION DE UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_EliminarAbonoVentas]
+@parametro varchar(20)
+AS	
+BEGIN TRY
+	BEGIN TRAN 
+DELETE FROM [dbo].[ABONOSVENTASCREDITO] WHERE [REMISION]=@parametro
+	COMMIT
+	END TRY
+BEGIN CATCH
+	ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+
+
+/********         PROCEDIMIENTOS ALMACENADOS PARA  GASTOS        ************************/
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaGastos]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA BUSCAR GASTOS EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_BuscaGastos]
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[GASTOS]
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscaGastos2]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA BUSCAR GASTOS EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_BuscaGastos2]
+@comprobante varchar(20)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[GASTOS] WHERE [COMPROVANTE]=@comprobante
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaDescripcion]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaDescripcionGastos]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([DESCRIPCION]) FROM [dbo].[GASTOS]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaBeneficiario]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaBeneficiario]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([BENEFICIARIO]) FROM [dbo].[GASTOS]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaComprobante]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaComprobante]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([COMPROVANTE]) FROM [dbo].[GASTOS]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaItem]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletItem]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([DESCRIPCION]) FROM [dbo].[ITEMS]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaDescripcion]    Script Date: 20/01/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_CompletaDescripcion]
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT DISTINCT([DESCRIPCION]) FROM [dbo].[GASTOS]
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaGasto]    Script Date: 13/01/2020 8:07:06 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA MODIFICAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ModificaGasto]
+@comprobante varchar(20),
+@fecha datetime,
+@descripcion varchar(150),
+@monto float ,
+@beneficiario varchar(100),
+@nuip varchar(100),
+@descripcion2 varchar(150),
+@habilitado int
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[GASTOS] SET [COMPROVANTE]=@comprobante,[FECHA]=@fecha,[DESCRIPCION]=@descripcion,[MONTO]=@monto,[BENEFICIARIO]=@descripcion,[NUIP]=@nuip,[DESCRIPCION_DETALLADA]=@descripcion2,[BHABILITADO]=@habilitado
+WHERE [COMPROVANTE]=@comprobante
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaGasto]    Script Date: 13/01/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA GUARDAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE  PROCEDURE [dbo].[Sp_GuardaGasto]
+@comprobante varchar(20),
+@fecha datetime,
+@descripcion varchar(150),
+@monto float ,
+@beneficiario varchar(100),
+@nuip varchar(100),
+@descripcion2 varchar(150),
+@habilitado int
+AS
+BEGIN TRY
+	BEGIN TRAN 
+insert into  [dbo].[GASTOS]([COMPROVANTE],[FECHA],[DESCRIPCION],[MONTO],[BENEFICIARIO],[NUIP],[DESCRIPCION_DETALLADA],[BHABILITADO])
+values(@comprobante,@fecha,@descripcion,@monto,@beneficiario,@nuip,@descripcion2,@habilitado)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_EliminarGasto]    Script Date: 13/01/2020 8:06:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA ELIMINAR DATOS DE UN CAMPO ESPECIFICO EN FUNCION DE UN COMBOBOX  SEGUN PARAMETROS */
+CREATE PROCEDURE [dbo].[Sp_EliminarGasto]
+@comprobante varchar(20)
+AS	
+BEGIN TRY
+	BEGIN TRAN 
+DELETE FROM [dbo].[GASTOS] WHERE [COMPROVANTE]=@comprobante
+	COMMIT
+	END TRY
+BEGIN CATCH
+	ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ValidaGasto]    Script Date: 13/01/2020 8:07:06 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA BUSCAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[Sp_ValidaGasto]
+@comprobante varchar(20)
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT COUNT([COMPROVANTE]) FROM [dbo].[GASTOS] where [COMPROVANTE]=@comprobante
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ConsecutivoCompras]    Script Date: 21/01/2020 8:51:32 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*SP PARA VALIDAR SI EL PEDIDO EXISTE EN LA BDPEDIDOS*/ 
+CREATE PROCEDURE [dbo].[Sp_ConsecutivGastos]
+AS 
+BEGIN TRY
+		BEGIN TRAN
+		SELECT COUNT([COMPROVANTE]) AS TOTALREG FROM [dbo].[GASTOS]
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/****************  PROCEDIMIENTOS ALMACENADOS PARA CXC Y CXP  **********************************/
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ConsecutivoCXC]    Script Date: 21/01/2020 8:51:32 p. m. ******/
+
+
+
+
+/********************** STORED PROCEDURES PARA LIBRO DIARIO ****************************************/
+
+/****** Object:  StoredProcedure [dbo].[Sp_ValidarLibro]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE Sp_ValidarLibro
+@fecha as datetime
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT COUNT(*) FROM [dbo].[LIBRODIARIO] where [FECHA]=@fecha
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_BuscarLibro]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE Sp_BuscarLibro
+@fecha as datetime
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[LIBRODIARIO] where [FECHA]=@fecha
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_MostrarLibro]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_MostrarLibro] 
+@parametro  datetime
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[LIBRODIARIO] WHERE [FECHA]=@parametro
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_MostrarLibro]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_FiltrarLibroDiario] 
+@desde  datetime,
+@hasta  datetime
+AS
+BEGIN TRY
+		BEGIN TRAN 
+SELECT * FROM [dbo].[LIBRODIARIO] WHERE [FECHA] BETWEEN @desde and @hasta
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[[Sp_MostrarVentasContado]]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_MostrarVentasContado] 
+@parametro  datetime
+AS
+BEGIN TRY
+		BEGIN TRAN 
+          SELECT [UTILIDAD],[FECHAVENTA],[TIPO],[CANT] FROM [dbo].[VENTA_PROD] WHERE [FECHAVENTA]=@parametro and [CANT]<>'0' and [TIPO]='CONTADO'
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+/****** Object:  StoredProcedure [dbo].[[Sp_MostrarVentasCredito]]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_MostrarVentasCredito] 
+@parametro  datetime
+AS
+BEGIN TRY
+		BEGIN TRAN 
+          SELECT [UTILIDAD],[FECHAPAGO],[TIPO],[CANT] FROM [dbo].[VENTA_PROD] WHERE [FECHAPAGO]=@parametro and [CANT]<>'0' and [TIPO]='CREDITO'
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[[Sp_MostrarComprasContado]]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_MostrarComprasContado] 
+@parametro  datetime
+AS
+BEGIN TRY
+		BEGIN TRAN 
+		SELECT [MONTO_TOTAL],[FECHACOMPRA],[TIPO],[CANT] FROM [dbo].[COMPRAS] WHERE [FECHACOMPRA]=@parametro and [CANT]<>'0' and [TIPO]='CONTADO'
+		COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_MostrarGastos]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_MostrarGastos] 
+@parametro  datetime
+AS
+BEGIN TRY
+		BEGIN TRAN 
+         SELECT [MONTO],[FECHA] FROM [dbo].[GASTOS] WHERE [FECHA]=@parametro	
+        COMMIT
+END TRY
+BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_MostrarAbonosVentasCredito]    Script Date: 15/01/2020 8:09:04 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_MostrarAbonosVentasCredito] 
+@parametro  datetime
+AS
+BEGIN TRY
+		BEGIN TRAN     
+		  SELECT [ABONO],[FECHABONO]  FROM [dbo].[ABONOSVENTASCREDITO] WHERE [FECHABONO]=@parametro
+        COMMIT
+END TRY
+BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_MostrarAbonosComprasCredito] 
+@parametro  datetime
+AS
+BEGIN TRY
+		BEGIN TRAN     
+		  SELECT [ABONO],[FECHABONO]  FROM [dbo].[ABONOSCOMPRASCREDITO] WHERE [FECHABONO]=@parametro 
+        COMMIT
+END TRY
+BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_GuardaLibro   Script Date: 13/01/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[Sp_GuardaLibro]
+@ventas float ,
+@compras float ,
+@gastos float ,
+@ventascredito float ,
+@abonocxp float ,
+@utilidad float ,
+@fecha  datetime
+AS
+BEGIN TRY
+	BEGIN TRAN 
+insert into  [dbo].[LIBRODIARIO]([VENTAS],[COMPRAS],[GASTOS],[VENTASCRED],[AB_COMPRAS],[UTILIDAD],[FECHA])
+values(@ventas,@compras,@gastos,@ventascredito,@abonocxp,@utilidad,@fecha)
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaLibro]   Script Date: 13/01/2020 8:06:55 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE  PROCEDURE [dbo].[Sp_ModificaLibro]
+@ventas float ,
+@compras float ,
+@gastos float ,
+@ventascredito float ,
+@abonocxp float ,
+@utilidad float ,
+@fecha  datetime
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[LIBRODIARIO] SET [VENTAS]=@ventas,[COMPRAS]=@compras,[GASTOS]=@gastos,[VENTASCRED]=@ventascredito,[AB_COMPRAS]=@abonocxp,[UTILIDAD]=@utilidad,[FECHA]=@fecha
+WHERE [FECHA]=@fecha
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[GetBySearch]    Script Date: 28/10/2020 10:10:30 p.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[GetBySearch]
+	@search nvarchar(max)=null
+AS
+BEGIN
+	SELECT * from [dbo].[REFERENCIAS] P
+	left join [dbo].[Tbl_Category] C on p.CategoryId = c.CategoryId
+	where
+	P.DESCRIPCION LIKE CASE WHEN @search is not null then  '%'+@search+'%' else P.DESCRIPCION end
+	OR
+	C.NombreCategoria LIKE CASE WHEN @search is not null then  '%'+@search+'%' else C.NombreCategoria end
+END
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaAbonosVentasCreditoWeb]    Script Date: 19/12/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].Sp_CompletaAbonosVentasCreditoWeb
+@picker datetime,
+@placa int, 
+@cliente varchar(100)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT [REMISION],[NUIP],[ABONO],[TIPO],[FECHABONO],[IDUSUARIO],[IDCLIENTE],[CONSECUTIVO] FROM [dbo].[ABONOSVENTASCREDITO] 
+WHERE [FECHABONO]=@picker and [IDCARRO]=@placa and [IDCLIENTE]=@cliente and [TIPO] ='ABONO' and [BHABILITADO]='1'
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH  
+GO
+
+/****** Object:  StoredProcedure [dbo].[Sp_CompletaAbonosVentasCreditoWeb]    Script Date: 19/12/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].Sp_CompletaAbonosVentasCreditoWeb2
+@picker datetime,
+@placa int,
+@cliente int
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT [REMISION],[NUIP],[ABONO],[TIPO],[FECHABONO],[IDUSUARIO],[IDCLIENTE],[CONSECUTIVO] FROM [dbo].[ABONOSVENTASCREDITO] 
+WHERE [FECHABONO]=@picker and [IDCARRO]=@placa and [IDUSUARIO]=@cliente and [TIPO] ='ABONO' and [BHABILITADO]='1'
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH  
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Sp_Buscaidcarro]    Script Date: 19/12/2020 11:38:47 a. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].Sp_Buscaidcarro
+@placa varchar(100)
+AS
+BEGIN TRY
+	BEGIN TRAN 
+SELECT [IDCARRO] FROM [dbo].[CARROS] WHERE [PLACA]=@placa
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH  
+GO
+
+/****** Object:  StoredProcedure [dbo].[uspFiltrarReferencias]    Script Date: 11/08/2021 1:40:08 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[uspFiltrarReferencias]
+@descripcion varchar(100)
+as
+begin
+if @descripcion=''
+ select R.IDREF,R.REF,R.DESCRIPCION,R.CANT,R.VALUNI_VENTA
+  from REFERENCIAS R  
+  where R.BHABILITADO = 1
+  ORDER BY R.DESCRIPCION ASC
+else
+ select R.IDREF,R.REF,R.DESCRIPCION,R.CANT,R.VALUNI_VENTA
+  from REFERENCIAS R  
+  where R.BHABILITADO = 1 and R.DESCRIPCION LIKE '%'+@descripcion+'%'
+  ORDER BY R.DESCRIPCION ASC
+end
+
+/****** Object:  StoredProcedure [dbo].[uspFiltrarReferencias2]    Script Date: 11/08/2021 1:40:08 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[uspFiltrarReferencias2]
+@descripcion varchar(100)
+as
+begin
+if @descripcion=''
+ select R.IDREF,R.REF,R.DESCRIPCION,R.CANT
+  from REFERENCIAS R  
+  where R.BHABILITADO = 3
+  ORDER BY R.DESCRIPCION ASC
+else
+ select R.IDREF,R.REF,R.DESCRIPCION,R.CANT
+  from REFERENCIAS R  
+  where R.BHABILITADO = 1 and R.DESCRIPCION LIKE '%'+@descripcion+'%'
+  ORDER BY R.DESCRIPCION ASC
+end
+
+/****** Object:  StoredProcedure [dbo].[uspFiltrarventasweb]    Script Date: 11/08/2021 1:40:44 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[uspFiltrarventasweb]
+@usuario varchar(50)
+as
+begin
+if @usuario=''
+  select V.IDWEB,R.REF,V.CANT,V.INFO1,V.FECHAVENTA
+  from VENTA_PRODWEB V
+  INNER JOIN REFERENCIAS R ON R.IDREF = V.IDREF
+  where V.BHABILITADO = 1 
+  ORDER BY R.REF ASC
+  else
+  select V.IDWEB,R.REF,V.CANT,V.INFO1,V.FECHAVENTA
+  from VENTA_PRODWEB V
+  INNER JOIN REFERENCIAS R ON R.IDREF = V.IDREF
+  where V.BHABILITADO = 1 and V.USUARIO=@usuario
+  ORDER BY R.REF ASC
+end
+
+/****** Object:  StoredProcedure [dbo].[uspGuardarVentas]    Script Date: 11/08/2021 1:41:30 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[uspGuardarVentas]
+@idref int,
+@descripcion varchar(100),
+@valventauni float,
+@cant float,
+@montoventa float,
+@tipo varchar(50),
+@fechaventa datetime,
+@usuario varchar(50),
+@info1 varchar(100),
+@info2 varchar(100),
+@info3 varchar(100)
+as
+begin
+insert into [dbo].[VENTA_PRODWEB]([IDREF],[DESCRIPCION],[VALUNI_VENTA],[CANT],[MONTO_TOTAL],[TIPO],[FECHAVENTA],[USUARIO],[INFO1],[INFO2],[INFO3],[BHABILITADO])
+values(@idref,@descripcion,@valventauni,@cant,@montoventa,@tipo,@fechaventa,@usuario,@info1,@info2,@info3,1)
+end
+
+/****** Object:  StoredProcedure [dbo].[uspListarReeferencias]    Script Date: 11/08/2021 1:42:02 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[uspListarReeferencias]
+as
+begin
+  select R.IDREF,R.REF,R.DESCRIPCION,R.CANT,R.VALUNI_VENTA
+  from REFERENCIAS R  
+  where R.BHABILITADO = 1
+  ORDER BY R.DESCRIPCION ASC
+end
+
+
+/****** Object:  StoredProcedure [dbo].[uspListarReeferencias2]    Script Date: 11/08/2021 1:42:02 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[uspListarReeferencias2]
+as
+begin
+  select R.IDREF,R.REF,R.DESCRIPCION,R.CANT
+  from REFERENCIAS R  
+  where R.BHABILITADO = 3
+  ORDER BY R.DESCRIPCION ASC
+end
+
+/****** Object:  StoredProcedure [dbo].[uspListarRef]    Script Date: 11/08/2021 1:42:44 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[uspListarRef]
+as
+begin
+  select IDREF,REF
+  from REFERENCIAS
+  where BHABILITADO=1
+end
+
+/****** Object:  StoredProcedure [dbo].[uspListarVentasWeb]    Script Date: 11/08/2021 1:43:10 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[uspListarVentasWeb]
+as
+begin
+  select V.IDWEB,R.REF,V.CANT,V.INFO1,V.FECHAVENTA
+  from VENTA_PRODWEB V
+  INNER JOIN REFERENCIAS R ON R.IDREF = V.IDREF
+  where V.BHABILITADO = 1 
+  ORDER BY R.REF ASC  
+end
+
+/****** Object:  StoredProcedure [dbo].[uspRecuperarRef]    Script Date: 11/08/2021 1:44:50 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE procedure [dbo].[uspRecuperarRef]
+@descripcion varchar(100)
+as
+begin
+select [IDREF],[CANT],[VALUNI_VENTA],[DESCRIPCION],[VALCOSTO_UNI]
+from [dbo].[REFERENCIAS]
+where [DESCRIPCION]=@descripcion
+end
+
+/****** Object:  StoredProcedure [dbo].[uspRecuperarVenta]    Script Date: 11/08/2021 1:45:16 a.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER procedure [dbo].[uspRecuperarVenta]
+@idweb int
+as
+begin
+select [IDWEB],[IDREF],[DESCRIPCION],[VALUNI_VENTA],[CANT],[MONTO_TOTAL],[TIPO],[FECHAVENTA],[USUARIO],[OBSERVACIONES]
+from [dbo].[VENTA_PRODWEB]
+where [IDWEB]=@idweb
+end
+
+/****** Object:  StoredProcedure [dbo].[Sp_ModificaReferencia]    Script Date: 10/08/2021 8:07:06 p. m. */
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*PROCEDIMIENTO ALMACENADO PARA MODIFICAR CLIENTE EN BD SEGUN PARAMETROS*/
+CREATE PROCEDURE [dbo].[uspModificaReferencia]
+@ref int,
+@cant float ,
+@valtotcosto float ,
+@valtotventa float 
+AS
+BEGIN TRY
+	BEGIN TRAN 
+UPDATE [dbo].[REFERENCIAS] SET [CANT]=@cant,[VALCOSTO_TOTAL]=@valtotcosto,[VALVENTA_TOTAL]=@valtotventa  
+WHERE [IDREF]=@ref
+COMMIT
+	END TRY
+	BEGIN CATCH
+ROLLBACK
+	/*PRINT ERROR_MESSAGE()*/
+END CATCH
+GO
+/****** Object:  StoredProcedure [dbo].[[uspEliminarVentaWeb]]    Script Date: 21/06/2021 8:58:17 p.m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[uspEliminarVentaWeb]
+@id int
+as
+begin
+update [dbo].[VENTA_PRODWEB]
+set BHABILITADO=0
+where [IDWEB]=@id
+end
+
+
+
+
+
+
+

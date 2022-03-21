@@ -1,0 +1,11 @@
+C:\BackUpTotal\URBAN\CAPANEGOCIO\bin\Debug\CAPANEGOCIO.dll
+C:\BackUpTotal\URBAN\CAPANEGOCIO\bin\Debug\CAPANEGOCIO.pdb
+C:\BackUpTotal\URBAN\CAPANEGOCIO\bin\Debug\CAPADATOS.dll
+C:\BackUpTotal\URBAN\CAPANEGOCIO\bin\Debug\CAPAENTIDAD.dll
+C:\BackUpTotal\URBAN\CAPANEGOCIO\bin\Debug\CAPADATOS.pdb
+C:\BackUpTotal\URBAN\CAPANEGOCIO\bin\Debug\CAPAENTIDAD.pdb
+C:\BackUpTotal\URBAN\CAPANEGOCIO\obj\Debug\CAPANEGOCIO.csproj.AssemblyReference.cache
+C:\BackUpTotal\URBAN\CAPANEGOCIO\obj\Debug\CAPANEGOCIO.csproj.CoreCompileInputs.cache
+C:\BackUpTotal\URBAN\CAPANEGOCIO\obj\Debug\CAPANEGOCIO.csproj.CopyComplete
+C:\BackUpTotal\URBAN\CAPANEGOCIO\obj\Debug\CAPANEGOCIO.dll
+C:\BackUpTotal\URBAN\CAPANEGOCIO\obj\Debug\CAPANEGOCIO.pdb

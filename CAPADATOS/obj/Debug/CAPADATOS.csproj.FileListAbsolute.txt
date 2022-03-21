@@ -1,0 +1,9 @@
+C:\BackUpTotal\URBAN\CAPADATOS\bin\Debug\CAPADATOS.dll
+C:\BackUpTotal\URBAN\CAPADATOS\bin\Debug\CAPADATOS.pdb
+C:\BackUpTotal\URBAN\CAPADATOS\bin\Debug\CAPAENTIDAD.dll
+C:\BackUpTotal\URBAN\CAPADATOS\bin\Debug\CAPAENTIDAD.pdb
+C:\BackUpTotal\URBAN\CAPADATOS\obj\Debug\CAPADATOS.csproj.AssemblyReference.cache
+C:\BackUpTotal\URBAN\CAPADATOS\obj\Debug\CAPADATOS.csproj.CoreCompileInputs.cache
+C:\BackUpTotal\URBAN\CAPADATOS\obj\Debug\CAPADATOS.csproj.CopyComplete
+C:\BackUpTotal\URBAN\CAPADATOS\obj\Debug\CAPADATOS.dll
+C:\BackUpTotal\URBAN\CAPADATOS\obj\Debug\CAPADATOS.pdb

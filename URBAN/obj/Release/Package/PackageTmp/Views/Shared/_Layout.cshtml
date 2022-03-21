@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas Pos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="../Images/POS.jpg" />
+    <style>
+        body {
+            font-size: 12px;
+            background-color: darkturquoise;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="container">
+        <div class="container body-content">
+            @RenderBody()
+
+            <footer>
+                <div class="row">
+                    <div class="col-md-12 copyright">
+                        <div class="cpy-right text-center py-3">
+                            <br />
+                            <div class="cpy-right text-center py-3">
+                                <p class="">
+
+                                    <span class="text-center text-info">- @DateTime.Now.Year | Desarrollado por </span>
+                                    <span class="text-center text-info"><a href="https://www.gygsystems.com"> www.gygsystems.com </a></span>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>
+

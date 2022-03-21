@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    string User = (string)Session["Usuario"];
+}
+
+<br />
+<legend>Administracion de Ventas</legend>
+<leyend>
+    <h4><font color="black"><span>@DateTime.Today.ToLongDateString()</span></font></h4>
+    <h4 class="form-inline">
+        <font color="black"><span>Bienvenido Usario: </span></font>
+        <label> <font color="black"><span>@User</span></font></label>
+        <br />
+        <button type="button" id="BTNNOTIFICA" class="btn btn-success glyphicon glyphicon-alert" onclick="Ventanueva();"> Notificar Venta</button>
+    </h4>
+    <br />
+</leyend>
+<fieldset class="container mb-4">
+    <legend>Administracion de VentasWeb</legend>
+    <form id="frmventas" method="post">
+        <div class="row">
+            <div class=" mt-3 mb-3 col-md-6">
+                <input type="text" name="txtdescripcion" id="txtdescripcion" onkeyup="Buscareferencia()" placeholder="Descripcion del Calzado" class="form-control o" />
+            </div>
+            <br />
+            <div id="divTablaRef">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class=" mt-3 mb-3 col-md-6">
+                <label>Referencia</label>
+                <select name="idref" id="idref" class="form-control o"></select>
+            </div>
+            <div class="mt-3 mb-3 col-md-6">
+                <label>Descripcion </label>
+                <input type="text" name="descripcion" id="descripcion" class="form-control o" readonly />
+            </div>
+        </div>
+        <div class="row">
+            <div class="mt-3 mb-3 col-md-6">
+                <label>Valor Unidad </label>
+                <input type="number" name="valventa" id="valventa" class="form-control o" onkeypress="validarSoloNumeros(event)" />
+            </div>
+            <div class="mt-3 mb-3 col-md-6">
+                <label>Cantidad</label>
+                <input type="number" id="cant" name="cant" class="form-control o" onkeypress="validarSoloNumeros(event)" value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="mt-3 mb-3 col-md-6">
+                <label>Valor Venta</label>
+                <input type="text" name="monto_total" id="monto_total" class="form-control o" readonly />
+            </div>
+            <div class="mt-3 mb-3 col-md-6">
+                <input type="hidden" name="tipo" id="tipo" class="form-control o" value="VENTAWEB" readonly />
+                <label>Fecha Venta</label>
+                <input type="date" name="fechaventa" id="fechaventa" class="form-control o" />
+            </div>
+        </div>
+        <div class="row">
+            <div class=" mt-3 mb-3 col-md-6">
+                <input type="hidden" name="usuario" id="usuario" class="form-control o" value="@User" readonly />
+                <label>Informacion 1</label>
+                <input type="text" name="info1" id="info1" class="form-control o" />
+            </div>
+            <div class=" mt-3 mb-3 col-md-6">
+                <label>Informacion 2</label>
+                <input type="text" name="info2" id="info2" class="form-control o" />
+            </div>
+        </div>
+        <div class="row">
+            <div class=" mt-3 mb-3 col-md-6">
+                <label>Informacion 3</label>
+                <input type="text" name="info3" id="info3" class="form-control o" />
+            </div>
+        </div>
+        <div class="row">
+            <div class=" mt-3 mb-3 col-md-6">
+                <input type="hidden" name="idref2" id="idref2" class="form-control o" readonly value="0" />
+            </div>
+            <div class=" mt-3 mb-3 col-md-6">
+                <input type="hidden" name="stock" id="stock" class="form-control o" readonly value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class=" mt-3 mb-3 col-md-6">
+                <input type="hidden" name="stock2" id="stock2" class="form-control o" readonly value="0" />
+            </div>
+            <div class=" mt-3 mb-3 col-md-6">
+                <input type="hidden" name="valcosto" id="valcosto" class="form-control o" readonly value="0" />
+            </div>
+        </div>
+        <div class="row">
+            <div class=" mt-3 mb-3 col-md-6">
+                <input type="hidden" name="valtotventa" id="valtotventa" class="form-control o" readonly value="0" />
+            </div>
+            <div class=" mt-3 mb-3 col-md-6">
+                <input type="hidden" name="valtotcosto" id="valtotcosto" class="form-control o" readonly value="0" />
+            </div>
+        </div>
+    </form>
+    <br />
+    <div class="row">
+        <div class=" mt-3 mb-3 col-md-6 form-inline">
+            <button type="button" id="BTNCALCULA" class="btn btn-warning" onclick="restar();"> Calcular</button>
+            <button type="button" id="BTNGUARDA" class="btn btn-success" onclick="guardarVenta();"> Guardar</button>
+        </div>
+    </div>
+</fieldset>
+
+<fieldset class="container mb-4">
+    <form id="frmventas2" method="post">
+    </form>
+</fieldset>
+<br />
+<div id="divTablaVentas">
+
+</div>
+
+<script src="~/Scripts/sweetalert.js"></script>
+<script src="~/Scripts/generic.js"></script>
+<script src="~/Scripts/Vende.js"></script>
+
+<script>
+
+
+
+
+    function guardarVenta() {
+
+        var error = ValidarObligatorios("frmventas")
+        if (error != "") {
+            Error(error);
+            return;
+        }
+
+         var urlpost = "@Url.Content("~/Ventas/GuardarVenta")";
+        var frmventas = document.getElementById("frmventas");
+        var frm = new FormData(frmventas);
+        fetch(urlpost, {
+            method: "POST",
+            body: frm
+        }).then(res => res.text())
+            .then(res => {
+                if (res == "1") {
+                    Correcto("Se Guardo correctamente");
+                    limpiar();
+                    ListarVentasWeb();
+                    FiltrarVentasWeb();
+                    Buscareferencia();
+                    $("#BTNNOTIFICA").show();
+                }
+            })
+
+    }
+
+
+   @*function Eliminar(idweb) {
+      Editar2(idweb);
+      Confirmacion("Deseas Eliminar La Venta", "Confirme la  eliminaciòn", function (res) {
+        var idweb = document.getElementById("idweb");
+        var urlpost = "@Url.Content("~/Ventas/EliminarVenta/?idweb=idweb")";
+        var frmventas = document.getElementById("frmventas");
+        var frm = new FormData(frmventas);
+        fetch(urlpost, {
+            method: "POST",
+            body: frm
+        }).then(res => res.text())
+            .then(res => {
+                if (res == "1") {
+                    Modificaref();
+                }
+            })
+      })
+   }*@
+
+
+    function Ventanueva() {
+        var usua = $("#usuario").val();
+        location.href="https://api.whatsapp.com/send?phone=+573242030297&text=!%20Se%20Ha%20Realizado%20Una%20Venta%20Por%20Vendedor:" + usua + "";
+    }
+
+
+    //function Modificaref() {
+    //    var vendedor = $("#usuario").val();
+    //    var idref = $("#idref").val();
+    //    var cant = $("#cant").val();
+    //    location.href="https://api.whatsapp.com/send?phone=+573242030297&text=!%20Se%20Ha%20Eliminado%20Una%20Venta%20debe%20Modificar%20El%20Stock%20Vendedor:" + vendedor + "Referencia:" + idref + "Cant:" + cant + "";
+    //}
+</script>

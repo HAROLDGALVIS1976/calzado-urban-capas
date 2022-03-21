@@ -1,0 +1,9 @@
+C:\BackUpTotal\URBAN\CAPADATOS\bin\Release\CAPADATOS.dll
+C:\BackUpTotal\URBAN\CAPADATOS\bin\Release\CAPADATOS.pdb
+C:\BackUpTotal\URBAN\CAPADATOS\bin\Release\CAPAENTIDAD.dll
+C:\BackUpTotal\URBAN\CAPADATOS\bin\Release\CAPAENTIDAD.pdb
+C:\BackUpTotal\URBAN\CAPADATOS\obj\Release\CAPADATOS.csproj.AssemblyReference.cache
+C:\BackUpTotal\URBAN\CAPADATOS\obj\Release\CAPADATOS.csproj.CoreCompileInputs.cache
+C:\BackUpTotal\URBAN\CAPADATOS\obj\Release\CAPADATOS.csproj.CopyComplete
+C:\BackUpTotal\URBAN\CAPADATOS\obj\Release\CAPADATOS.dll
+C:\BackUpTotal\URBAN\CAPADATOS\obj\Release\CAPADATOS.pdb

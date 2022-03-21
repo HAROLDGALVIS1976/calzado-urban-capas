@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="URBANModelStoreContainer" CdmEntityContainer="URBANEntities">
+    <EntitySetMapping Name="ABONOSCOMPRASCREDITO">
+      <EntityTypeMapping TypeName="URBANModel.ABONOSCOMPRASCREDITO">
+        <MappingFragment StoreEntitySet="ABONOSCOMPRASCREDITO">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="FACTURA" ColumnName="FACTURA" />
+          <ScalarProperty Name="PROVEEDOR" ColumnName="PROVEEDOR" />
+          <ScalarProperty Name="ABONO" ColumnName="ABONO" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="FECHABONO" ColumnName="FECHABONO" />
+          <ScalarProperty Name="FECHAPAGO" ColumnName="FECHAPAGO" />
+          <ScalarProperty Name="IDPROVEEDOR" ColumnName="IDPROVEEDOR" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ABONOSVENTASCREDITO">
+      <EntityTypeMapping TypeName="URBANModel.ABONOSVENTASCREDITO">
+        <MappingFragment StoreEntitySet="ABONOSVENTASCREDITO">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="REMISION" ColumnName="REMISION" />
+          <ScalarProperty Name="NUIP" ColumnName="NUIP" />
+          <ScalarProperty Name="ABONO" ColumnName="ABONO" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="FECHABONO" ColumnName="FECHABONO" />
+          <ScalarProperty Name="FECHAPAGO" ColumnName="FECHAPAGO" />
+          <ScalarProperty Name="IDUSUARIO" ColumnName="IDUSUARIO" />
+          <ScalarProperty Name="IDCLIENTE" ColumnName="IDCLIENTE" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+          <ScalarProperty Name="IDCARRO" ColumnName="IDCARRO" />
+          <ScalarProperty Name="CONSECUTIVO" ColumnName="CONSECUTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CARROS">
+      <EntityTypeMapping TypeName="URBANModel.CARROS">
+        <MappingFragment StoreEntitySet="CARROS">
+          <ScalarProperty Name="IDCARRO" ColumnName="IDCARRO" />
+          <ScalarProperty Name="PLACA" ColumnName="PLACA" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CLIENTES">
+      <EntityTypeMapping TypeName="URBANModel.CLIENTES">
+        <MappingFragment StoreEntitySet="CLIENTES">
+          <ScalarProperty Name="IDCLIENTE" ColumnName="IDCLIENTE" />
+          <ScalarProperty Name="CLIENTE" ColumnName="CLIENTE" />
+          <ScalarProperty Name="NUIP" ColumnName="NUIP" />
+          <ScalarProperty Name="DIRECCION" ColumnName="DIRECCION" />
+          <ScalarProperty Name="TELEFONO" ColumnName="TELEFONO" />
+          <ScalarProperty Name="CIUDAD" ColumnName="CIUDAD" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="IDRUTA" ColumnName="IDRUTA" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+          <ScalarProperty Name="TIPOUSUARIO" ColumnName="TIPOUSUARIO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="COMPRAS">
+      <EntityTypeMapping TypeName="URBANModel.COMPRAS">
+        <MappingFragment StoreEntitySet="COMPRAS">
+          <ScalarProperty Name="IDCOMPRA" ColumnName="IDCOMPRA" />
+          <ScalarProperty Name="FACTURA" ColumnName="FACTURA" />
+          <ScalarProperty Name="IDREF" ColumnName="IDREF" />
+          <ScalarProperty Name="CANT" ColumnName="CANT" />
+          <ScalarProperty Name="VALCOSTO_UNI" ColumnName="VALCOSTO_UNI" />
+          <ScalarProperty Name="PROVEEDOR" ColumnName="PROVEEDOR" />
+          <ScalarProperty Name="MONTO_TOTAL" ColumnName="MONTO_TOTAL" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="FECHACOMPRA" ColumnName="FECHACOMPRA" />
+          <ScalarProperty Name="FECHAPAGO" ColumnName="FECHAPAGO" />
+          <ScalarProperty Name="IDPROVEEDOR" ColumnName="IDPROVEEDOR" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="COMPRASCREDITO">
+      <EntityTypeMapping TypeName="URBANModel.COMPRASCREDITO">
+        <MappingFragment StoreEntitySet="COMPRASCREDITO">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="FACTURA" ColumnName="FACTURA" />
+          <ScalarProperty Name="PROVEEDOR" ColumnName="PROVEEDOR" />
+          <ScalarProperty Name="MONTODEUDA" ColumnName="MONTODEUDA" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="FECHAPAGO" ColumnName="FECHAPAGO" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EMPLEADO">
+      <EntityTypeMapping TypeName="URBANModel.EMPLEADO">
+        <MappingFragment StoreEntitySet="EMPLEADO">
+          <ScalarProperty Name="IIDEMPLEADO" ColumnName="IIDEMPLEADO" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="FECHACONTRATO" ColumnName="FECHACONTRATO" />
+          <ScalarProperty Name="SUELDO" ColumnName="SUELDO" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="TELEFONO" ColumnName="TELEFONO" />
+          <ScalarProperty Name="IDUSUARIO" ColumnName="IDUSUARIO" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+          <ScalarProperty Name="TIPOUSUARIO" ColumnName="TIPOUSUARIO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ITEMS">
+      <EntityTypeMapping TypeName="URBANModel.ITEMS">
+        <MappingFragment StoreEntitySet="ITEMS">
+          <ScalarProperty Name="IDITEM" ColumnName="IDITEM" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PROVEEDORES">
+      <EntityTypeMapping TypeName="URBANModel.PROVEEDORES">
+        <MappingFragment StoreEntitySet="PROVEEDORES">
+          <ScalarProperty Name="IDPROVEEDOR" ColumnName="IDPROVEEDOR" />
+          <ScalarProperty Name="PROVEEDOR" ColumnName="PROVEEDOR" />
+          <ScalarProperty Name="NUIP" ColumnName="NUIP" />
+          <ScalarProperty Name="DIRECCION" ColumnName="DIRECCION" />
+          <ScalarProperty Name="TELEFONO" ColumnName="TELEFONO" />
+          <ScalarProperty Name="CIUDAD" ColumnName="CIUDAD" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="REFERENCIAS">
+      <EntityTypeMapping TypeName="URBANModel.REFERENCIAS">
+        <MappingFragment StoreEntitySet="REFERENCIAS">
+          <ScalarProperty Name="IDREF" ColumnName="IDREF" />
+          <ScalarProperty Name="REF" ColumnName="REF" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="CANT" ColumnName="CANT" />
+          <ScalarProperty Name="VALCOSTO_UNI" ColumnName="VALCOSTO_UNI" />
+          <ScalarProperty Name="VALUNI_VENTA" ColumnName="VALUNI_VENTA" />
+          <ScalarProperty Name="CANT_MINIMA" ColumnName="CANT_MINIMA" />
+          <ScalarProperty Name="VALCOSTO_TOTAL" ColumnName="VALCOSTO_TOTAL" />
+          <ScalarProperty Name="VALVENTA_TOTAL" ColumnName="VALVENTA_TOTAL" />
+          <ScalarProperty Name="IMAGEN" ColumnName="IMAGEN" />
+          <ScalarProperty Name="UNI_MEDIDA" ColumnName="UNI_MEDIDA" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+          <ScalarProperty Name="VALMIN_VENTA" ColumnName="VALMIN_VENTA" />
+          <ScalarProperty Name="PORCENTAJE" ColumnName="PORCENTAJE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RUTA">
+      <EntityTypeMapping TypeName="URBANModel.RUTA">
+        <MappingFragment StoreEntitySet="RUTA">
+          <ScalarProperty Name="IDRUTA" ColumnName="IDRUTA" />
+          <ScalarProperty Name="NOMBRERUTA" ColumnName="NOMBRERUTA" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tbl_Category">
+      <EntityTypeMapping TypeName="URBANModel.Tbl_Category">
+        <MappingFragment StoreEntitySet="Tbl_Category">
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="NombreCategoria" ColumnName="NombreCategoria" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tbl_TIPO">
+      <EntityTypeMapping TypeName="URBANModel.Tbl_TIPO">
+        <MappingFragment StoreEntitySet="Tbl_TIPO">
+          <ScalarProperty Name="IDTIPOVENTA" ColumnName="IDTIPOVENTA" />
+          <ScalarProperty Name="TIPOVENTA" ColumnName="TIPOVENTA" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TIPOUSUARIOREGISTRO">
+      <EntityTypeMapping TypeName="URBANModel.TIPOUSUARIOREGISTRO">
+        <MappingFragment StoreEntitySet="TIPOUSUARIOREGISTRO">
+          <ScalarProperty Name="TIPOUSUARIO" ColumnName="TIPOUSUARIO" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USUARIOS">
+      <EntityTypeMapping TypeName="URBANModel.USUARIOS">
+        <MappingFragment StoreEntitySet="USUARIOS">
+          <ScalarProperty Name="IDUSUARIO" ColumnName="IDUSUARIO" />
+          <ScalarProperty Name="USUARIO" ColumnName="USUARIO" />
+          <ScalarProperty Name="CONTRASEÑA" ColumnName="CONTRASEÑA" />
+          <ScalarProperty Name="TIPOUSUARIO" ColumnName="TIPOUSUARIO" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+          <ScalarProperty Name="IID" ColumnName="IID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VENTA_PROD">
+      <EntityTypeMapping TypeName="URBANModel.VENTA_PROD">
+        <MappingFragment StoreEntitySet="VENTA_PROD">
+          <ScalarProperty Name="IDVENTA" ColumnName="IDVENTA" />
+          <ScalarProperty Name="REMISION" ColumnName="REMISION" />
+          <ScalarProperty Name="IDREF" ColumnName="IDREF" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="NUIP" ColumnName="NUIP" />
+          <ScalarProperty Name="VALUNI_VENTA" ColumnName="VALUNI_VENTA" />
+          <ScalarProperty Name="CANT" ColumnName="CANT" />
+          <ScalarProperty Name="MONTO_TOTAL" ColumnName="MONTO_TOTAL" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="FECHAVENTA" ColumnName="FECHAVENTA" />
+          <ScalarProperty Name="FECHAPAGO" ColumnName="FECHAPAGO" />
+          <ScalarProperty Name="IDCLIENTE" ColumnName="IDCLIENTE" />
+          <ScalarProperty Name="UTILIDAD" ColumnName="UTILIDAD" />
+          <ScalarProperty Name="USUARIO" ColumnName="USUARIO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VENTA_PRODWEB">
+      <EntityTypeMapping TypeName="URBANModel.VENTA_PRODWEB">
+        <MappingFragment StoreEntitySet="VENTA_PRODWEB">
+          <ScalarProperty Name="IDWEB" ColumnName="IDWEB" />
+          <ScalarProperty Name="IDREF" ColumnName="IDREF" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="VALUNI_VENTA" ColumnName="VALUNI_VENTA" />
+          <ScalarProperty Name="CANT" ColumnName="CANT" />
+          <ScalarProperty Name="MONTO_TOTAL" ColumnName="MONTO_TOTAL" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="FECHAVENTA" ColumnName="FECHAVENTA" />
+          <ScalarProperty Name="USUARIO" ColumnName="USUARIO" />
+          <ScalarProperty Name="CLIENTE" ColumnName="CLIENTE" />
+          <ScalarProperty Name="DIRECCION" ColumnName="DIRECCION" />
+          <ScalarProperty Name="TELEFONO" ColumnName="TELEFONO" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VENTASCREDITO">
+      <EntityTypeMapping TypeName="URBANModel.VENTASCREDITO">
+        <MappingFragment StoreEntitySet="VENTASCREDITO">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="REMISION" ColumnName="REMISION" />
+          <ScalarProperty Name="NUIP" ColumnName="NUIP" />
+          <ScalarProperty Name="MONTODEUDA" ColumnName="MONTODEUDA" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="FECHAPAGO" ColumnName="FECHAPAGO" />
+          <ScalarProperty Name="IDCLIENTE" ColumnName="IDCLIENTE" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+          <ScalarProperty Name="IDCARRO" ColumnName="IDCARRO" />
+          <ScalarProperty Name="CONSECUTIVO" ColumnName="CONSECUTIVO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DEVCOMPRAS">
+      <EntityTypeMapping TypeName="URBANModel.DEVCOMPRAS">
+        <MappingFragment StoreEntitySet="DEVCOMPRAS">
+          <ScalarProperty Name="IDCOMPRA" ColumnName="IDCOMPRA" />
+          <ScalarProperty Name="FACTURA" ColumnName="FACTURA" />
+          <ScalarProperty Name="IDREF" ColumnName="IDREF" />
+          <ScalarProperty Name="CANT" ColumnName="CANT" />
+          <ScalarProperty Name="VALCOSTO_UNI" ColumnName="VALCOSTO_UNI" />
+          <ScalarProperty Name="PROVEEDOR" ColumnName="PROVEEDOR" />
+          <ScalarProperty Name="MONTO_TOTAL" ColumnName="MONTO_TOTAL" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="FECHACOMPRA" ColumnName="FECHACOMPRA" />
+          <ScalarProperty Name="FECHAPAGO" ColumnName="FECHAPAGO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DEVENTA_PROD">
+      <EntityTypeMapping TypeName="URBANModel.DEVENTA_PROD">
+        <MappingFragment StoreEntitySet="DEVENTA_PROD">
+          <ScalarProperty Name="IDVENTA" ColumnName="IDVENTA" />
+          <ScalarProperty Name="REMISION" ColumnName="REMISION" />
+          <ScalarProperty Name="IDREF" ColumnName="IDREF" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="NUIP" ColumnName="NUIP" />
+          <ScalarProperty Name="VALUNI_VENTA" ColumnName="VALUNI_VENTA" />
+          <ScalarProperty Name="CANT" ColumnName="CANT" />
+          <ScalarProperty Name="MONTO_TOTAL" ColumnName="MONTO_TOTAL" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="FECHAVENTA" ColumnName="FECHAVENTA" />
+          <ScalarProperty Name="FECHAPAGO" ColumnName="FECHAPAGO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GASTOS">
+      <EntityTypeMapping TypeName="URBANModel.GASTOS">
+        <MappingFragment StoreEntitySet="GASTOS">
+          <ScalarProperty Name="COMPROVANTE" ColumnName="COMPROVANTE" />
+          <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="MONTO" ColumnName="MONTO" />
+          <ScalarProperty Name="BENEFICIARIO" ColumnName="BENEFICIARIO" />
+          <ScalarProperty Name="NUIP" ColumnName="NUIP" />
+          <ScalarProperty Name="DESCRIPCION_DETALLADA" ColumnName="DESCRIPCION_DETALLADA" />
+          <ScalarProperty Name="BHABILITADO" ColumnName="BHABILITADO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LIBRODIARIO">
+      <EntityTypeMapping TypeName="URBANModel.LIBRODIARIO">
+        <MappingFragment StoreEntitySet="LIBRODIARIO">
+          <ScalarProperty Name="VENTAS" ColumnName="VENTAS" />
+          <ScalarProperty Name="COMPRAS" ColumnName="COMPRAS" />
+          <ScalarProperty Name="GASTOS" ColumnName="GASTOS" />
+          <ScalarProperty Name="VENTASCRED" ColumnName="VENTASCRED" />
+          <ScalarProperty Name="AB_COMPRAS" ColumnName="AB_COMPRAS" />
+          <ScalarProperty Name="UTILIDAD" ColumnName="UTILIDAD" />
+          <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,6 @@
+C:\BackUpTotal\URBAN\CAPAENTIDAD\bin\Debug\CAPAENTIDAD.dll
+C:\BackUpTotal\URBAN\CAPAENTIDAD\bin\Debug\CAPAENTIDAD.pdb
+C:\BackUpTotal\URBAN\CAPAENTIDAD\obj\Debug\CAPAENTIDAD.csproj.AssemblyReference.cache
+C:\BackUpTotal\URBAN\CAPAENTIDAD\obj\Debug\CAPAENTIDAD.csproj.CoreCompileInputs.cache
+C:\BackUpTotal\URBAN\CAPAENTIDAD\obj\Debug\CAPAENTIDAD.dll
+C:\BackUpTotal\URBAN\CAPAENTIDAD\obj\Debug\CAPAENTIDAD.pdb

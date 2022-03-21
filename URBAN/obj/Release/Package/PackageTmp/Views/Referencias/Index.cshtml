@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    string user = (string)Session["Usuario"];
+}
+
+<!DOCTYPE html>
+
+<br />
+<legend>Administracion de Referencias</legend>
+<leyend>
+    <h4><font color="black"><span>@DateTime.Today.ToLongDateString()</span></font></h4>
+    <h4 class="form-inline">
+        <font color="black"><span>Bienvenido Usario: </span></font>
+        <label> <font color="black"><span>@user</span></font></label>
+    </h4>
+    <br />
+</leyend>
+
+<br />
+<div class="row">
+    <div class=" mt-3 mb-3 col-md-6">
+        <input type="text" id="txtdescripcion" onkeyup="Buscareferencia()" placeholder="Descripcion del Calzado" class="form-control o" />
+    </div>
+
+</div>
+<br />
+<div id="divTablaRef">
+
+</div>
+
+<script src="~/Scripts/sweetalert.js"></script>
+<script src="~/Scripts/generic.js"></script>
+<script src="~/Scripts/referencias.js"></script>

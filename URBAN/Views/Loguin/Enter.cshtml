@@ -1,0 +1,106 @@
+﻿@using CAPAENTIDAD
+@{
+    ViewBag.Title = "Enter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html>
+<head>
+    <title>login Ventas Pos</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- vinculo a bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    
+    <!-- Temas-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+   
+    <!-- se vincula al hoja de estilo para definir el aspecto del formulario de login-->
+    <link rel="icon" type="image/jpg" href="../Images/POS.jpg" />
+    <style>
+
+
+        body {
+            font-size: 12px;
+            background-color: darkturquoise;
+        }
+
+        #Contenedor {
+            width: 330px;
+            margin: 50px auto;
+            background-color: #F3EDED;
+            border: 1px solid #ECE8E8;
+            height: 250px;
+            border-radius: 8px;
+            padding: 0px 9px 0px 9px;
+            /*  background-image: url('../../Images/aumentarlasventascrecer-es-63.jpg');*/
+            background-color: darkturquoise;
+        }
+
+
+        .Icon span {
+            background: orange;
+            padding: 20px;
+            border-radius: 120px;
+        }
+
+        .Icon {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            color: white;
+            font-size: 50px;
+            text-align: center;
+        }
+
+        .opcioncontra {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            color: white;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="Contenedor">
+        <div class="Icon">
+            <!--Icono de usuario-->
+            <link rel="icon" type="image/jpg" href="../Images/POS.jpg" />
+        </div>
+        <div class="ContentForm">
+
+            <!-- Metodo / Controlador-->
+            @using (@Html.BeginForm("Enter", "Loguin", FormMethod.Post, new { @id = "frmLogin" }))
+            {
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-envelope"></i></span>
+                    @Html.TextBox("usuario", null, new { @class = "form-control", @placeholder = "Usuario", @required = "true" })
+                </div>
+
+                <br>
+                <div class="input-group input-group-lg">
+                    <span class="input-group-addon" id="sizing-addon1"><i class="glyphicon glyphicon-lock"></i></span>
+                    @Html.Password("contraseña", null, new { @class = "form-control", @placeholder = "*******", @required = "true" })
+                </div>
+                <br>
+                <button class="btn btn-lg btn-primary btn-block btn-signin" id="IngresoLog" type="submit">Entrar</button>
+                <br />
+                <div>
+                    <h4> @ViewBag.Message</h4>
+                </div>
+            }
+
+
+        </div>
+    </div>
+
+    <script src="~/Script/jquery-1.10.2.js"></script>
+    <script src="~/Script/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Script/jquery.validate.js"></script>
+    <script src="~/Script/bootstrap.js"></script>
+
+</body>
+
+</html>
+
